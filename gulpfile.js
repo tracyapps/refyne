@@ -96,8 +96,8 @@ gulp.task( 'browsersync', function () {
 		proxy: "http://refyne.local",
 	} );
 
-	gulp.watch( './assets/scss/**/*.scss', ['styles'] );
-	gulp.watch( './assets/js/scripts/*.js', ['site-js'] ).on( 'change', browserSync.reload );
+	gulp.watch( './assets/scss/**/*.scss',  gulp.series( 'styles' ) );
+	gulp.watch( './assets/js/scripts/*.js',  gulp.series( 'site-js' ) ).on( 'change', browserSync.reload );
 
 } );
 
@@ -105,19 +105,19 @@ gulp.task( 'browsersync', function () {
 gulp.task( 'watch', function () {
 
 	// Watch .scss files
-	gulp.watch( './assets/scss/**/*.scss', ['styles'] );
+	gulp.watch( './assets/scss/**/*.scss',  gulp.series( 'styles' ) );
 
 	// Watch svg files
-	gulp.watch( './assets/svg/originals/*.svg', ['svgSprite'] );
+	gulp.watch( './assets/svg/originals/*.svg',  gulp.series( 'svgSprite' ) );
 
 	// Watch site-js files
-	gulp.watch( './assets/js/scripts/*.js', ['site-js'] );
+	gulp.watch( './assets/js/scripts/*.js',  gulp.series( 'site-js' ) );
 
-	gulp.start( ['browsersync'] );
+	gulp.parallel( 'browsersync' );
 
 } );
 
 // Run styles, site-js and foundation-js
 gulp.task( 'default', function () {
-	gulp.start( 'styles', 'site-js', 'svgSprite' );
+	gulp.parallel( 'styles', 'site-js', 'svgSprite' );
 } );
